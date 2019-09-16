@@ -48,10 +48,11 @@ class ProductController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
-    const body = request.only(['name','description','image'])
+    const body = request.only(['name','code','description','image'])
 
     let product = await Product.create({
       name: body.name,
+      code: body.code,
       description: body.description,
       image: body.image
     })

@@ -1,6 +1,7 @@
 'use strict'
 
 const Transanction = use ('App/Models/Transaction')
+const Inventory = use ('App/Models/Inventory')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -51,14 +52,30 @@ class TransactionController {
    */
   async store ({ request, response }) {
 
-    const body = request.only(['inventory_id','type'])
+    const body = request.only(['inventory_id','type','quantity'])
 
     let transaction = await Transanction.create({
-      invetory_id: body.invetory_id,
-      type: body.type
+      inventory_id: body.inventory_id,
+      type: body.type,
+      quantity: body.quantity
     })
 
+    let number = body.type
+    let numberInventory = body.inventory_id
+    let quanty = body.quantity
+
+    let inventory = await Inventory.find(numberInventory) 
+
+    if(number==1){
+      let actual_quantity = inventory.quantity
+      inventory.quantity = actual_quantity + quanty
+    }else{
+      let actual_quantity = inventory.quantity
+      inventory.quantity = actual_quantity - quanty
+    }
+
     await transaction.save()
+    await inventory.save()
 
     return response
       .status(201)

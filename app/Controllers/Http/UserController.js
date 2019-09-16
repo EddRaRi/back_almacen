@@ -1,6 +1,6 @@
 'use strict'
 
-const User = use('App/Model/User')
+const User = use('App/Models/User')
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -18,7 +18,7 @@ class UserController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ request, response, view }) {
+  async index ({response}) {
     let users = await User.all()
 
     return response
@@ -47,11 +47,12 @@ class UserController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
-    let { username, email, rol } = request.only(['username', 'email', 'rol'])
+    let { username, email, password, rol } = request.only(['username', 'email','password','rol'])
 
     let user = new User()
     user.username = username
     user.email = email
+    user.password = password
     user.rol = rol
 
     await user.save()
@@ -84,6 +85,23 @@ class UserController {
    * @param {View} ctx.view
    */
   async edit ({ params, request, response, view }) {
+    let id = params.id
+
+    let user = await User.find(id)
+    
+    let { username, password, email, rol } = request.only(['username', 'password', 'email', 'rol'])
+
+    user.username = username
+    user.password = password
+    user.email = email
+    user.rol = rol
+
+    await user.save()
+
+    return response
+      .status(200)
+      .json(user)
+
   }
 
   /**

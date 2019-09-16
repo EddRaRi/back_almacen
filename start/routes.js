@@ -18,17 +18,18 @@ const Route = use('Route')
 
 Route.on('/').render('welcome')
 
-Route.get('/allUsers','UserController.index')
-Route.post('/setUser', 'UserController.store')
+Route.get('users/all','UserController.index')
+Route.post('users/register', 'UserController.store')
+Route.put('users/update/:id', 'UserController.edit')
 
-Route.get('/allProducts', 'ProductController.index')
-Route.post('/setProduct', 'ProductController.store')
+Route.get('products/all', 'ProductController.index')
+Route.post('products/create', 'ProductController.store')
 
-Route.get('/allInventory', 'InventoryController.index')
-Route.post('/setInventory', 'InventoryController.store')
+Route.get('inventories/all', 'InventoryController.index')
+Route.post('inventories/create', 'InventoryController.store')
 
-Route.get('/allTransaction', 'TransactionController.index')
-Route.post('/setTransaction', 'TransactionController.store')
+Route.get('transactions/all', 'TransactionController.index')
+Route.post('transactions/create', 'TransactionController.store')
 
-Route.get('/allSales', 'SaleController.index')
-Route.post('/setSale', 'SaleController.store')
+Route.get('sales/all', 'SaleController.index')
+Route.post('sales/create', 'SaleController.store')
