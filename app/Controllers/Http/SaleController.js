@@ -1,6 +1,7 @@
 'use strict'
 
 const Sale = use('App/Models/Sale')
+const Inventory = use ('App/Models/Inventory')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -50,18 +51,39 @@ class SaleController {
    */
   async store ({ request, response }) {
 
-    const body = request.only(['product_id','user_id','quantity', 'total', 'discount', 'payment_method', 'status_sale'])
+    const body = request.only(['product_id','user_id','quantity', 'discount', 'payment_method', 'status_sale'])
+
+    let idProduct = body.product_id
+    let amount = body.quantity
+    let offert = body.discount
+    let offertDecimal = offert/100 
+
+    let product = await Inventory.findBy('product_id',idProduct)
+
+    let price = product.price
+    let tax = product.tax
+    let taxDecimal = tax/100
+
+    let subTotal = price * amount
+
+    let subPrice = subTotal - (subTotal*offertDecimal)
+
+    let finalPrice =  subPrice + (subPrice*taxDecimal)
 
     let sale = await Sale.create({
       product_id: body.product_id,
       user_id: body.user_id,
       quantity: body.quantity,
-      total: body.total,
+      total: finalPrice,
       discount: body.discount,
       payment_method: body.payment_method,
-      status_sale: body.status_sale
+      status: body.status_sale
     })
 
+    let beforeInventory = product.quantity
+    product.quantity = beforeInventory - amount
+
+    await product.save()
     await sale.save()
 
     return response
@@ -90,7 +112,28 @@ class SaleController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async edit ({ params, request, response, view }) {
+  async edit ({ params, request, response }) {
+    let idSale = params.id
+
+    let saleToCancel = await Sale.find(idSale)
+    let idProduct = saleToCancel.product_id
+
+    let quantity = saleToCancel.quantity
+
+    let product = await Inventory.findBy('product_id',idProduct)
+
+    saleToCancel.status = 2
+
+    let beforeInventory = product.quantity
+    product.quantity = beforeInventory + quantity
+
+    await saleToCancel.save()
+    await product.save()
+
+    return response
+      .status(200)
+      .json(saleToCancel)
+
   }
 
   /**

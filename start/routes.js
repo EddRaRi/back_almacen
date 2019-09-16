@@ -33,3 +33,4 @@ Route.post('transactions/create', 'TransactionController.store')
 
 Route.get('sales/all', 'SaleController.index')
 Route.post('sales/create', 'SaleController.store')
+Route.put('sales/cancel/:id','SaleController.edit')
