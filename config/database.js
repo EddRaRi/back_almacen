@@ -1,7 +1,5 @@
 'use strict'
 
-const Url = require('url-parse')
-const DATABASE_URL = new Url(Env.get('DATABASE_URL'))
 
 /** @type {import('@adonisjs/framework/src/Env')} */
 const Env = use('Env')
