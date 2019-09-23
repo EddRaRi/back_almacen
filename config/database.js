@@ -83,7 +83,6 @@ module.exports = {
   } */
 
   pg: {
-    client: 'pg',
     connection: {
       host: Env.get('DB_HOST', DATABASE_URL.hostname),
       port: Env.get('DB_PORT', DATABASE_URL.port),
@@ -91,5 +90,5 @@ module.exports = {
       password: Env.get('DB_PASSWORD', DATABASE_URL.password),
       database: Env.get('DB_DATABASE', DATABASE_URL.pathname.substr(1))
     }
-   }
+  }
 }
