@@ -12,7 +12,7 @@ class SalesSchema extends Schema {
       table.integer('user_id').references('users.id')
       table.integer('quantity')
       table.float('total')
-      table.timestamp('date').defaultTo(knex.fn.now())
+      table.timestamp('date').defaultTo(this.fn.now())
       table.float('discount')
       table.integer('payment_method').references('payments.id')
       table.integer('status').references('statuses.id')

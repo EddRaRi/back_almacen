@@ -1,6 +1,7 @@
 'use strict'
 
 const Sale = use('App/Models/Sale')
+const Transanction = use ('App/Models/Transaction')
 const Inventory = use ('App/Models/Inventory')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
@@ -51,7 +52,7 @@ class SaleController {
    */
   async store ({ request, response }) {
 
-    const body = request.only(['product_id','user_id','quantity', 'discount', 'payment_method', 'status_sale'])
+    const body = request.only(['product_id','user_id','quantity', 'discount', 'payment_method'])
 
     let idProduct = body.product_id
     let amount = body.quantity
@@ -77,12 +78,19 @@ class SaleController {
       total: finalPrice,
       discount: body.discount,
       payment_method: body.payment_method,
-      status: body.status_sale
+      status: 1
     })
 
     let beforeInventory = product.quantity
     product.quantity = beforeInventory - amount
 
+    let transaction = await Transanction.create({
+      inventory_id: product.id,
+      type: 1,
+      quantity: body.quantity
+    })
+
+    await transaction.save()
     await product.save()
     await sale.save()
 

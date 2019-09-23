@@ -9,7 +9,7 @@ class TransactionsSchema extends Schema {
       table.increments()
 
       table.integer('inventory_id').references('inventories.id')
-      table.timestamp('date').defaultTo(knex.fn.now())
+      table.timestamp('date').defaultTo(this.fn.now())
       table.integer('type').references('types.id')
       table.integer('quantity')
 
