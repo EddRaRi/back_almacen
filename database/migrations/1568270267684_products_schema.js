@@ -11,7 +11,7 @@ class ProductsSchema extends Schema {
       table.integer('code').notNullable()
       table.string('name',150).notNullable()
       table.text('description').notNullable()
-      table.text('image').notNullable()
+      table.text('image').notNullable() //change
 
       table.timestamps()
     })
