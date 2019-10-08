@@ -25,7 +25,7 @@ class InventoryController {
     .with('products')
     .with('users')
     .fetch()
-
+    //change
     return response
       .status(200)
       .json(inventory)
