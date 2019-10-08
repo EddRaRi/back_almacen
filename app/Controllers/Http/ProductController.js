@@ -1,6 +1,8 @@
 'use strict'
 
 const Product = use('App/Models/Product')
+const Inventory = use ('App/Models/Inventory')
+const Transanction = use ('App/Models/Transaction')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -48,20 +50,54 @@ class ProductController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
-    const body = request.only(['name','code','description','image'])
+    const body = request.only(['name','description','image', 'price','quantity', 'user_id', 'tax'])
 
-    let product = await Product.create({
-      name: body.name,
-      code: body.code,
-      description: body.description,
-      image: body.image
-    })
+    let checkProduct = await Product.findBy('name',body.name)
 
-    await product.save()
+    if (checkProduct == null){
+      let product = await Product.create({
+        name: body.name,
+        //code: body.code,
+        description: body.description,
+        image: body.image
+      })
 
-    return response
-      .status(201)
-      .json(body)
+      await product.save()
+
+      let getProduct = await Product.findBy('name',body.name)
+
+      getProduct.code = getProduct.id
+
+      await getProduct.save()
+
+      let inventory = await Inventory.create({
+        product_id: getProduct.id,
+        quantity: body.quantity,
+        price: body.price,
+        user_id: body.user_id,
+        tax: body.tax
+      })
+
+      await inventory.save()
+
+      let getInventory = await Inventory.findBy('product_id',getProduct.id)
+
+      let transaction = await Transanction.create({
+        inventory_id: getInventory.id,
+        type: 1,
+        quantity: getInventory.quantity
+      })
+
+      await transaction.save()
+
+      return response
+        .status(201)
+        .json(getProduct)
+    }else{
+      return response
+        .status(400)
+        .json("Producto repetido/ ya existente")
+    }
 
   }
 

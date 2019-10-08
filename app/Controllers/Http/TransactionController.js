@@ -22,7 +22,9 @@ class TransactionController {
    */
   async index ({ request, response, view }) {
 
-    let transaction = await Transanction.all()
+    let transaction = await Transanction.query()
+    .with('types')
+    .fetch()
     
     return response
       .status(200)

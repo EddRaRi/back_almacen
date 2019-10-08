@@ -8,13 +8,13 @@ class SalesSchema extends Schema {
     this.create('sales', (table) => {
       table.increments()
 
-      table.integer('product_id').references('products.id')
+      table.integer('product_id').unsigned().references('id').inTable('products')
       table.integer('user_id').references('users.id')
       table.integer('quantity')
       table.float('total')
       table.timestamp('date').defaultTo(this.fn.now())
       table.float('discount')
-      table.integer('payment_method').references('payments.id')
+      table.integer('payment_method').references('id').inTable('payments')
       table.integer('status').references('statuses.id')
 
       table.timestamps()

@@ -21,7 +21,10 @@ class InventoryController {
    */
   async index ({ request, response, view }) {
 
-    let inventory = await Inventory.all()
+    let inventory = await Inventory.query()
+    .with('products')
+    .with('users')
+    .fetch()
 
     return response
       .status(200)
