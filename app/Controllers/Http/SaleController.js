@@ -1,6 +1,7 @@
 'use strict'
 
 const Product = use('App/Models/Product')
+const Payment = use('App/Models/Payment')
 const Sale = use('App/Models/Sale')
 const Transanction = use ('App/Models/Transaction')
 const Inventory = use ('App/Models/Inventory')
@@ -35,6 +36,14 @@ class SaleController {
     return response
       .status(200)
       .json(query)
+  }
+
+  async allPays({request, response, view}) {
+    let pay = await Payment.all()
+
+    return response
+      .status(200)
+      .json(pay)
   }
 
   /**
