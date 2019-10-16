@@ -24,6 +24,7 @@ class TransactionController {
 
     let transaction = await Transanction.query()
     .with('types')
+    .with('products')
     .fetch()
     
     return response

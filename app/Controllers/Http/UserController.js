@@ -26,6 +26,30 @@ class UserController {
       .json(users)
   }
 
+  async login ({ request, auth, response }) {
+    // Request parameters
+    let {username, password } = request.only( ['user', 'password'] )
+
+   try {
+     let login = await auth.attempt(username, password)
+     return response.status(200)
+       .json({
+         token: login.token
+       })
+   } catch (error) {
+     return response
+       .status(500)
+       .json({ status: 'fail', error: error})
+   }
+ }
+
+
+  show ({ auth, params }) {
+    if (auth.user.id !== Number(params.id)) {
+      return "You cannot see someone else's profile"
+    }
+    return auth.user
+  }
   /**
    * Render a form to be used for creating a new user.
    * GET users/create

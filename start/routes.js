@@ -18,12 +18,16 @@ const Route = use('Route')
 
 Route.on('/').render('welcome')
 
+Route.post('login', 'UserController.login').middleware('guest')
+Route.get('users/:id', 'UserController.show').middleware('auth')
+
 Route.get('users/all','UserController.index')
 Route.post('users/register', 'UserController.store')
 Route.put('users/update/:id', 'UserController.edit')
 
 Route.get('products/all', 'ProductController.index')
 Route.post('products/create', 'ProductController.store')
+Route.put('products/update/:id', 'ProductController.edit')
 
 Route.get('inventories/all', 'InventoryController.index')
 Route.post('inventories/create', 'InventoryController.store')

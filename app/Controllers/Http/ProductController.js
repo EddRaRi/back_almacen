@@ -123,6 +123,25 @@ class ProductController {
    * @param {View} ctx.view
    */
   async edit ({ params, request, response, view }) {
+    let id = params.id
+
+    let user = await Product.find(id)
+    let inventory = await Inventory.findBy('product_id', id)
+    
+    let { name, description, image, tax, price } = request.only(['name', 'description', 'image', 'tax', 'price'])
+
+    user.name = name
+    user.description = description
+    user.image = image
+    inventory.tax = tax
+    inventory.price = price
+
+    await user.save()
+    await inventory.save()
+
+    return response
+      .status(200)
+      .json([user,inventory])
   }
 
   /**
