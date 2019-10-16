@@ -32,6 +32,15 @@ class InventoryController {
 
   }
 
+  async getOne({ params, request, response, view }) {
+    let id = params.id
+    let inventory = await Inventory.query().where('id', '=', id).with('products').fetch()
+
+    return response
+      .status(200)
+      .json(inventory)
+  }
+
   /**
    * Render a form to be used for creating a new inventory.
    * GET inventories/create

@@ -28,10 +28,10 @@ class UserController {
 
   async login ({ request, auth, response }) {
     // Request parameters
-    let {username, password } = request.only( ['user', 'password'] )
+    const { email, password } = request.only( ['email', 'password'] )
 
    try {
-     let login = await auth.attempt(username, password)
+     let login = await auth.attempt(email, password)
      return response.status(200)
        .json({
          token: login.token
@@ -43,12 +43,19 @@ class UserController {
    }
  }
 
+  async logout({response}){
+    return response
+    .status(201)
+    .json("OK")
+  }
 
-  show ({ auth, params }) {
+  async show ({ auth, params, response }) {
     if (auth.user.id !== Number(params.id)) {
-      return "You cannot see someone else's profile"
+      console.log("BAD")
+      return response.status(400).json("Mal")
     }
-    return auth.user
+    console.log("nice")
+    return response.status(200).json("Bien")
   }
   /**
    * Render a form to be used for creating a new user.

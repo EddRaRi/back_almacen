@@ -18,8 +18,9 @@ const Route = use('Route')
 
 Route.on('/').render('welcome')
 
-Route.post('login', 'UserController.login').middleware('guest')
+Route.post('login', 'UserController.login')
 Route.get('users/:id', 'UserController.show').middleware('auth')
+Route.post('users/logout/:id', 'UserController.logout').middleware('auth')
 
 Route.get('users/all','UserController.index')
 Route.post('users/register', 'UserController.store')
@@ -30,6 +31,7 @@ Route.post('products/create', 'ProductController.store')
 Route.put('products/update/:id', 'ProductController.edit')
 
 Route.get('inventories/all', 'InventoryController.index')
+Route.get('inventories/:id', 'InventoryController.getOne')
 Route.post('inventories/create', 'InventoryController.store')
 
 Route.get('transactions/all', 'TransactionController.index')
