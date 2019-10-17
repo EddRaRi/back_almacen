@@ -28,7 +28,7 @@ class UserController {
 
   async login ({ request, auth, response }) {
     // Request parameters
-    const { email, password } = request.only( ['email', 'password'] )
+    const { email, password, key_notification } = request.only( ['email', 'password', 'key_notification'] )
 
     try {
       if (await auth.attempt(email, password)) {
@@ -36,6 +36,10 @@ class UserController {
           let accessToken = await auth.generate(user)
           console.log("entrando al login")
           Object.assign(user, accessToken)
+
+          user.key_notification = key_notification
+          await user.save()
+
           return response.json({ "user": user, "token": accessToken })
       }
 
