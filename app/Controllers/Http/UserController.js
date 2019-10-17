@@ -30,17 +30,18 @@ class UserController {
     // Request parameters
     const { email, password } = request.only( ['email', 'password'] )
 
-   try {
-     let login = await auth.attempt(email, password)
-     return response.status(200)
-       .json({
-         token: login.token
-       })
-   } catch (error) {
-     return response
-       .status(500)
-       .json({ status: 'fail', error: error})
-   }
+    try {
+      if (await auth.attempt(email, password)) {
+          let user = await User.findBy('email', email)
+          let accessToken = await auth.generate(user)
+          console.log("entrando al login")
+          Object.assign(user, accessToken)
+          return response.json({ "user": user, "token": accessToken })
+      }
+
+    } catch (e) {    
+      return response.json(e) 
+    }
  }
 
   async logout({response}){

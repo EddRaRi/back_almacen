@@ -11,6 +11,7 @@ class UserSchema extends Schema {
       table.string('email', 254).notNullable().unique()
       table.string('password', 60).notNullable()
       table.integer('rol').references('rols.id').notNullable()
+      table.text('key_notification')
       table.timestamps()
     })
   }
