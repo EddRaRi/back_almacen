@@ -84,7 +84,7 @@ class ProductController {
 
       let transaction = await Transanction.create({
         inventory_id: getInventory.id,
-        type: 1,
+        type: 2,
         quantity: getInventory.quantity
       })
 
