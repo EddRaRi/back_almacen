@@ -35,7 +35,8 @@ class UserController {
           let user = await User.findBy('email', email)
           let accessToken = await auth.generate(user)
           console.log("entrando al login")
-          Object.assign(user, accessToken)
+
+          console.log(user)
 
           user.key_notification = key_notification
           await user.save()
