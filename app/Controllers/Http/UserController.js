@@ -27,7 +27,7 @@ class UserController {
   }
 
   async login ({ request, auth, response }) {
-    // Request parameters
+    
     const { email, password, key_notification } = request.only( ['email', 'password', 'key_notification'] )
 
     try {
