@@ -118,10 +118,16 @@ class SaleController {
 
   async getById ({ request, response, params}) {
     let idSale = params.id
-    let sale = await Sale.find(idSale)
+    let sale = await Sale.query().where('id','=',idSale)
+    .with('products')
+    .with('payments')
+    .with('users')
+    .with('statusSale')
+    .fetch()
     return response
       .status(201)
       .json(sale)
+
 
   }
 
