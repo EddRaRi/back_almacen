@@ -31,6 +31,7 @@ class SaleController {
     .with('products')
     .with('payments')
     .with('users')
+    .with('statusSale')
     .fetch()
 
     return response

@@ -19,10 +19,10 @@ const Route = use('Route')
 Route.on('/').render('welcome')
 
 Route.post('login', 'UserController.login')
-Route.get('users/:id', 'UserController.show').middleware('auth')
 Route.post('users/logout/:id', 'UserController.logout').middleware('auth')
 
 Route.get('users/all','UserController.index')
+Route.get('users/:id', 'UserController.getOne')
 Route.post('users/register', 'UserController.store')
 Route.put('users/update/:id', 'UserController.edit')
 

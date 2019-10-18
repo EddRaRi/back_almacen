@@ -26,6 +26,16 @@ class UserController {
       .json(users)
   }
 
+  async getOne({ params, request, response, view }) {
+    let id = params.id
+
+    let user = await User.find(id)
+
+    return response
+      .status(200)
+      .json(user)
+  }
+
   async login ({ request, auth, response }) {
     
     const { email, password, key_notification } = request.only( ['email', 'password', 'key_notification'] )
@@ -53,15 +63,6 @@ class UserController {
     return response
     .status(201)
     .json("OK")
-  }
-
-  async show ({ auth, params, response }) {
-    if (auth.user.id !== Number(params.id)) {
-      console.log("BAD")
-      return response.status(400).json("Mal")
-    }
-    console.log("nice")
-    return response.status(200).json("Bien")
   }
   /**
    * Render a form to be used for creating a new user.
