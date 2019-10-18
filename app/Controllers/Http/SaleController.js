@@ -115,7 +115,7 @@ class SaleController {
       .status(201)
       .json(sale)
   }
-
+ //coment
   async getById ({ request, response, params}) {
     let idSale = params.id
     let sale = await Sale.query().where('id','=',idSale)
