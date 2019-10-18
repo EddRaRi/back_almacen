@@ -103,7 +103,7 @@ class SaleController {
 
     let transaction = await Transanction.create({
       inventory_id: product.id,
-      type: 1,
+      type: 2,
       quantity: body.quantity
     })
 
@@ -114,6 +114,15 @@ class SaleController {
     return response
       .status(201)
       .json(sale)
+  }
+
+  async getById ({ request, response, params}) {
+    let idSale = params.id
+    let sale = await Sale.find(idSale)
+    return response
+      .status(201)
+      .json(sale)
+
   }
 
   /**
